@@ -7,7 +7,7 @@ AX = {
 };
 
 if isfield(Q,'axes')
-	Q.axes = [Q.axes(:) AX(:)];
+	Q.axes = [Q.axes(:);AX(:)];
 else
 	Q.axes = AX;
 end

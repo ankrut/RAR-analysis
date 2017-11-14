@@ -52,9 +52,9 @@ for ii=1:imax
 		sLeft.model		= fUpdate(sLeft.x,sLeft.model);
 		
 		% calculate solution
-		% NOTE: the solution sRight.solution and sLeft.model may be not equivalent anymore
 		sLeft.solution	= fSolution(sLeft.model);
 		
+		% NOTE: fsolution can change also other parameter
 		% therefore update model of left border
 		sLeft.model		= fModel(sLeft.solution);
 		
@@ -87,9 +87,9 @@ for ii=1:imax
 		sRight.model	= fUpdate(sRight.x,sRight.model);
 		
 		% calculate solution
-		% NOTE: the solution sRight.solution and sRight.model may be not equivalent anymore
 		sRight.solution	= fSolution(sRight.model);
 		
+		% NOTE: fsolution can change also other parameter
 		% therefore update model of right border
 		sRight.model	= fModel(sRight.solution);
 		

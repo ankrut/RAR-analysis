@@ -33,10 +33,25 @@ classdef profile < module.tov
 			THETA0	= obj.data.theta0;
 			W0		= obj.data.W0;
 			BETA0	= obj.data.beta0;
-			XMIN	= opts.xmin;
-			XMAX	= opts.xmax;
-			TAU		= opts.tau;		% absolute error for ode solver
-			RTAU	= opts.rtau;	% relative error for ode solver
+			
+			CELL = lib.struct.toCell(opts);
+			Q = module.struct(...
+				'xmin',			'auto',...
+				'xmax',			1E20,...
+				'tau',			1E-16,...
+				'rtau',			1E-4,...
+				'tol',			1E-15,...
+				'numPoints',	500,...
+				CELL{:} ...
+			);
+		
+			XMIN	= Q.xmin;
+			XMAX	= Q.xmax;
+			TOL		= Q.tol;		% how close to singularity (TOL > 0)
+			TAU		= Q.tau;		% absolute error for ode solver
+			RTAU	= Q.rtau;		% relative error for ode solver
+			NN		= Q.numPoints;	% number of points for integral
+			
 			
 			tt = cputime;
 			dt = 10; % sec;
@@ -65,15 +80,21 @@ classdef profile < module.tov
 			% define density and pressure function handles
 			func_rho	= @(E,beta,alpha,ec) sqrt(E.^2 - 1).*E.^2.*(1 - exp((E - ec)./beta))./(exp((E - alpha)./beta) + 1);
 			func_p		= @(E,beta,alpha,ec) (E.^2 - 1).^(3/2).*(1 - exp((E - ec)./beta))./(exp((E - alpha)./beta) + 1);
-			frho		= @(r,nu) real(4/sqrt(pi)*model.tov.rar.integral.trapz(func_rho,BETA0*exp(-nu./2),ALPHA0*exp(-nu./2),EC0*exp(-nu./2),500));
-			fp			= @(r,nu) real(4/3/sqrt(pi)*model.tov.rar.integral.trapz(func_p,BETA0*exp(-nu./2),ALPHA0*exp(-nu./2),EC0*exp(-nu./2),500));
+			frho		= @(r,nu) real(4/sqrt(pi)*model.tov.rar.integral.trapz(func_rho,BETA0*exp(-nu./2),ALPHA0*exp(-nu./2),EC0*exp(-nu./2),NN));
+			fp			= @(r,nu) real(4/3/sqrt(pi)*model.tov.rar.integral.trapz(func_p,BETA0*exp(-nu./2),ALPHA0*exp(-nu./2),EC0*exp(-nu./2),NN));
 			
 			% set OPTIONS (for ODE solver)
 			fevent	= @(r,y) fEvent(EC0*exp(-y(1)/2) - 1); % check cutoff condition
 			options	= odeset('RelTol',RTAU,'AbsTol',TAU*[1 1],'Event',fevent);
 			
+			if strcmp(XMIN,'auto')
+				XMIN = sqrt(6*TOL/frho(0,0));
+			end
+			
 			% call ode solver for theta(r)
-			[R, NU, M] = module.tov.ode_solver_logeta(0,frho,fp,XMIN,XMAX,options);
+			RHO0		= frho(0,0);
+			ICS			= [1/6*RHO0*XMIN^2, 1/3*RHO0*XMIN^2];
+			[R, NU, M]	= module.tov.ode_solver(ICS,frho,fp,XMIN,XMAX,options);
 			
 			obj.data.radius			= R;
 			obj.data.potential		= NU;
