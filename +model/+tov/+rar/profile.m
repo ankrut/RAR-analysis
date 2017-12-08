@@ -89,6 +89,10 @@ classdef profile < module.tov
 			
 			if strcmp(XMIN,'auto')
 				XMIN = sqrt(6*TOL/frho(0,0));
+				
+				if isinf(XMIN) || isnan(XMIN)
+					error('derived xmin is ill (Inf or NaN)');
+				end
 			end
 			
 			% call ode solver for theta(r)
@@ -109,25 +113,39 @@ classdef profile < module.tov
 	
 	% CORRESPONDING PROFILES ---------------------------------------------
 	methods
-		function p = get_vacuum(obj,XMAX)
-			XMIN	= obj.data.radius(end);
-			M0		= obj.data.mass(end);
+		function p = getVacuumSolution(obj,varargin)
+			SCALE = lib.require(@model.tov.rar.scale);
 			
-			p = model.elementary.pointlike.profile(M0).set('radius', linspace(XMIN,XMAX));
-		end
+			% create object
+			p = model.elementary.pointlike.profile(obj.data.mass(end));
+			
+			% set scale factors (convert RAW -> SI)
+			% NOTE: requires module.tov.scale package
+			p.set('R', SCALE.SI.radius.map(obj));
+			p.set('M', SCALE.SI.mass.map(obj));
+			
+			% optional
+			Q = module.struct(...
+				'numPoints', 50,...
+				'xmin', obj.data.radius(end),...
+				varargin{:} ...
+			);
 		
-% % % 		% TODO (I need the relativistic version, Newtonian version does not work due to the beta0 parameter)
-% % % 		function p=get_king(obj)
-% % % 			% calc classic King profile
-% % % 			% use the corresponding central degeneracy at the degeneracy
-% % % 			% plateau (defined as first minima of rotation curve)
-% % % 			% (this way it works amazingly good!)
-% % % 			pnt		= lib.get_extrema(obj.data.radius,-obj.data.velocity,1);
-% % % 			W0		= interp1(obj.data.radius,obj.data.cutoff,pnt,'spline');
-% % % 			THETA0	= interp1(obj.data.radius,obj.data.degeneracy,pnt,'spline');
-% % % 			p		= classes.profile.newton.rar.profile(W0,obj.data.radius(1),obj.data.radius(end),1E-6);
-% % % 
-% % % 			classes.profile.newton.rar.profile.fermionic_rescale(p,THETA0,W0);
-% % % 		end
+			% destructure
+			XMIN = Q.xmin;
+			
+			if isfield(Q,'rmin') % rmin in SI units (m)
+				if ischar(Q.rmin) && strcmp(Q.rmin,'horizon')
+					XMIN = p.data.M0 + eps;
+				else
+					XMIN = Q.rmin/SCALE.SI.radius.map(obj);
+				end
+			end
+			
+			if isfield(Q,'rmax') % rmax in SI units (m)
+				XMAX = Q.rmax/SCALE.SI.radius.map(obj);
+				p.set('radius', logspace(log10(XMIN),log10(XMAX),Q.numPoints));
+			end
+		end
 	end
 end

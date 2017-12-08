@@ -1,3 +1,4 @@
+ANCH	= lib.require(@model.tov.rar.anchor);
 MAP		= lib.require(@model.tov.rar.map);
 SCALE	= lib.require(@model.tov.rar.scale);
 
@@ -5,7 +6,8 @@ SCALE	= lib.require(@model.tov.rar.scale);
 EXPORT.radius			= module.ProfileAxis(MAP.radius,				SCALE.core.radius);
 EXPORT.density			= module.ProfileAxis(MAP.cache.density,			SCALE.core.density);
 EXPORT.pressure			= module.ProfileAxis(MAP.cache.pressure,		SCALE.core.pressure);
-EXPORT.pressure			= module.ProfileAxis(MAP.potential,				SCALE.core.potential);
+EXPORT.potential		= module.ProfileAxis(MAP.potential,				SCALE.core.potential);
 EXPORT.mass				= module.ProfileAxis(MAP.mass,					SCALE.core.mass);
 EXPORT.velocity			= module.ProfileAxis(MAP.velocity,				SCALE.core.velocity);
 EXPORT.compactness		= module.ProfileAxis(MAP.compactness,			SCALE.core.compactness);
+EXPORT.degeneracy		= module.ProfileAxis(@(obj) MAP.degeneracy.map(obj) - ANCH.velocity_core.map(obj,MAP.degeneracy));

@@ -91,10 +91,6 @@ fh.Position(4) = DIM.height;
 % AXWIDTH		= (DIM.width - (DIM.padding.left + DIM.padding.right))/DIM.grid(2);
 % AXHEIGHT	= (DIM.height - (DIM.padding.bottom + DIM.padding.top))/DIM.grid(1);
 
-
-% link all x axes
-linkaxes(ax,'x')
-
 % hide ticks and labels
 set(ax(2:size(ax,1),:),'XTickLabel',[]);
 set(ax(2:size(ax,1),:),'XLabel',[]);
