@@ -40,4 +40,4 @@ AX.degeneracy = model.tov.rar.figure.ax(...
 
 % figure
 ax = [AX.degeneracy;AX.mass;AX.radius];
-fh = module.sapthesis.figure_grid(ax,'axHeight',6,'figure',{'FileName','analysis'});
+fh = module.sapthesis.figure_grid(ax,'axHeight',4.5,'figure',{'FileName','analysis'});

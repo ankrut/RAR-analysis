@@ -1,0 +1,1 @@
+Temperature parameter analysis illustrated with particular values of the density, mass and degeneracy variables for $\theta_0 = 20$ and three different cutoff parameter representing three regimes: $W_0 = 50$ (weak), $W_0 = 28$ (intermediate) and $W_0 = 22$ (strong). Those values are obtained at the core, plateau, halo and surface.

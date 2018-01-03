@@ -3,7 +3,7 @@ P			= load('export/CacheProfileW0.mat');
 STYLE		= lib.require(@configs.style_profiles);
 AXIS.center	= lib.require(@model.tov.rar.axes.center);
 AXIS.core	= lib.require(@model.tov.rar.axes.core);
-fh			= view.W0.profiles.figure();
+fh			= view.with_cutoff.W0.profiles.figure();
 
 % makeup
 for ii = 1:P.cored.length
@@ -175,4 +175,10 @@ P.cored.pick(1).forEach(@(p) lib.view.plot.curve2D(...
 ));
 
 
-lib.view.file.figure(fh,'export/W0');
+% save
+lib.view.latex.figure(...
+	'path',		'export/with-cutoff/W0-profile-core/',...
+	'figure',	fh,...
+	'label',	'fig:profile:with-cutoff:W0:core',...
+	'caption',	fileread('+view/+with_cutoff/+W0/+profiles/caption.txt') ...
+);

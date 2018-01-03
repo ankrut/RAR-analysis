@@ -1,5 +1,4 @@
 function createProfileGrid
-
 % set seed model struct
 opts		= struct('xmax', 1E20, 'tau', 1E-16, 'rtau', 1E-4);
 param.seed	= struct('beta0', 1E-6, 'W0', 200);

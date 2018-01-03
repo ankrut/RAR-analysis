@@ -17,7 +17,7 @@ switch class(Q.query)
 	case 'module.ProfileResponse'
 	list = module.ProfileResponseList(Q.query);
 	
-	case 'moduleProfileResponseList'
+	case 'module.ProfileResponseList'
 	list = Q.query;
 	
 	otherwise
@@ -32,11 +32,11 @@ chi2(1:nn)	= nan;
 
 for ii = 1:nn
 	if isnan(min(chi2)) || min(chi2) > Q.tau
-		try
+% 		try
 			fprintf('\n');
 			[SOL(ii),VM(ii)] = Q.fSolution{ii}(vm,list);
 			chi2(ii)		 = fChi2(SOL(ii));
-		end
+% 		end
 	end
 end
 

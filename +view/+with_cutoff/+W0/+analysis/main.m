@@ -1,7 +1,7 @@
 function main
 load('export/CacheAnalysisW0.mat');
 STYLE	= lib.require(@configs.style_analysis);
-fh		= view.W0.analysis.figure();
+fh		= view.with_cutoff.W0.analysis.figure();
 
 % show figure
 figure(fh);
@@ -27,4 +27,9 @@ h(1) = lib.view.plot.table2D(T,@(t) t.W0, @(t) t.THETA0 - t.THETAs,STYLE.surface
 lib.view.plot.legend(h,'Location','northwest');
 
 % save
-lib.view.file.figure(fh,'export/W0');
+lib.view.latex.figure(...
+	'path',		'export/with-cutoff/W0-analysis-core/',...
+	'figure',	fh,...
+	'label',	'fig:analysis:with-cutoff:W0:core',...
+	'caption',	fileread('+view/+with_cutoff/+W0/+analysis/caption.txt') ...
+);
