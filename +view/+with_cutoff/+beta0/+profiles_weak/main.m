@@ -1,7 +1,7 @@
 function main
 P			= load('export/CacheProfileBeta0.mat');
 STYLE		= lib.require(@configs.style_profiles);
-AXIS.plat	= lib.require(@model.tov.rar.axes.plateau);
+AXIS.plat	= lib.require(@lib.model.tov.rar.axes.plateau);
 fh			= view.with_cutoff.beta0.profiles_weak.figure();
 
 % makeup
@@ -29,7 +29,7 @@ P.cored.low.pick(1).forEach(@(p) lib.view.plot.curve2D(...
 	'y',	AXIS.plat.density,...
 	'plot', STYLE.fd ...
 ));
-title('cold')
+title('moderate')
 
 axes(fh.UserData.axes(3,2));
 P.cored.high.forEach(@(p) lib.view.plot.curve2D(...

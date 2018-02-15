@@ -1,30 +1,29 @@
 function [SOL,vm] = gosect(varargin)
-% default options
-opts.tau		= 1E-9;
-opts.rtau		= 1E-4;
-opts.MaxIter	= 50;
-
 % contract arguments with default values (if not set)
-S = module.struct(...
-	'options', opts,...
+Q = lib.module.struct(...
+	'tol',			eps,...
+	'tau',			1E-9,...
+	'rtau',			1E-4,...
+	'MaxIter',		50,...
+	'fModel',		@(SOL) SOL,...
+	'fSolution',	@(vm) vm,...
 	varargin{:} ...
 );
 
+
 % destructure
-TOL			= eps;					% x tolerance
-TAU			= S.options.tau;		% response tolerance
-RTAU		= S.options.rtau;		% relative response tolerance
-imax		= S.options.MaxIter;	% max iterations
+TOL			= Q.tol;				% x tolerance
+TAU			= Q.tau;				% response tolerance
+RTAU		= Q.rtau;				% relative response tolerance
+imax		= Q.MaxIter;			% max iterations
 
-Xint		= S.Xint;				% search interval
-vm			= S.model;				% initial model struct
+Xint		= Q.Xint;				% search interval
+vm			= Q.model;				% initial model struct
 
-fResponse	= S.fResponse;			% solution			-> double
-fSolution	= S.fSolution;			% model				-> solution
-fModel		= S.fModel;				% solution			-> model
-fUpdate		= S.fUpdate;			% (vector,model)	-> model
-
-fLog		= S.fLog;				% solution -> print
+fResponse	= Q.fResponse;			% solution			-> double
+fSolution	= Q.fSolution;			% model				-> solution
+fModel		= Q.fModel;				% solution			-> model
+fUpdate		= Q.fUpdate;			% (vector,model)	-> model
 
 % init
 PHI			= (1 + sqrt(5))/2;		% golden ratio
@@ -65,7 +64,9 @@ for ii=1:imax
 		Y(end+1) = sLeft.response;
 		
 		% logging
-		fLog(sLeft.solution);
+		if isfield(Q,'fLog')
+			Q.fLog(sLeft.solution);
+		end
 
 		% check tolerance
 		SOL = sLeft.solution;
@@ -100,7 +101,9 @@ for ii=1:imax
 		Y(end+1) = sRight.response;
 		
 		% logging
-		fLog(sRight.solution);
+		if isfield(Q,'fLog')
+			Q.fLog(sRight.solution);
+		end
 
 		% check tolerance
 		SOL = sRight.solution;
@@ -118,11 +121,11 @@ for ii=1:imax
 	if isnan(sLeft.response) && isnan(sRight.response)
 		error('badly chosen interval. Interval edges give NaN.')
 	elseif isnan(sLeft.response) || isnan(sRight.response)
-		Xint = S.onNaN(Xint,sLeft,sRight);
+		Xint = Q.onNaN(Xint,sLeft,sRight);
 		bCalcRight	= 1;
 		bCalcLeft	= 1;
 	elseif sLeft.response == sRight.response
-		Xint = S.onEqual(Xint,sLeft,sRight);
+		Xint = Q.onEqual(Xint,sLeft,sRight);
 		bCalcRight	= 1;
 		bCalcLeft	= 1;
 	elseif sLeft.response > sRight.response

@@ -1,12 +1,12 @@
 function varargout = errorbar(varargin)
-Q = module.struct(...
+Q = lib.module.struct(...
 	'errorbar', {},...
 	varargin{:}...
 );
 
 if isfield(Q,'profile')
 	switch class(Q.x)
-		case {'module.ProfileMapping','module.ProfileAxis'}
+		case {'lib.module.ProfileMapping','lib.module.ProfileAxis'}
 		X = Q.x.map(Q.profile);
 		
 		case 'function_handle'
@@ -18,7 +18,7 @@ if isfield(Q,'profile')
 	
 	
 	switch class(Q.y)
-		case {'module.ProfileMapping','module.ProfileAxis'}
+		case {'lib.module.ProfileMapping','lib.module.ProfileAxis'}
 		Y = Q.y.map(Q.profile);
 		
 		case 'function_handle'
@@ -29,7 +29,7 @@ if isfield(Q,'profile')
 	end
 	
 	switch class(Q.dy)
-		case {'module.ProfileMapping','module.ProfileAxis'}
+		case {'lib.module.ProfileMapping','lib.module.ProfileAxis'}
 		DY = Q.dy.map(Q.profile);
 		
 		case 'function_handle'

@@ -7,7 +7,7 @@ opts	= struct('xmin', 1E-7, 'xmax', 1E20, 'tau', 1E-16, 'rtau', 1E-4);
 param	= struct('beta0', 1E-6, 'theta0', 20, 'W0', 35.790981099387963);
 vm		= struct('param', param, 'options', opts);
 
-P		= script.W0.createGridW0(vm,W0)...
+P		= script.with_cutoff.W0.createGridW0(vm,W0)...
 		  .map(@(vm) model.tov.rar.profile('model',vm));
 
 % find extremum

@@ -1,11 +1,13 @@
 function [SOL,vm] = bisect(varargin)
 % contract arguments
-S = module.struct(varargin{:});
+S = lib.module.struct(varargin{:});
 
 % destructure
 Xint		= S.Xint;
 imax		= S.options.MaxIter;
 tau			= S.options.tau;
+XTOL		= eps;
+RTAU		= 1E-4;
 
 % left bound
 vm			= S.fUpdate(Xint(1),S.model);
@@ -25,7 +27,16 @@ if isfield(S,'fLog')
 	S.fLog(SOL);
 end
 
+% init
+Y = [];
+
 for ii=1:imax
+	% break criteria
+	if diff(Xint) < XTOL ...
+		|| (numel(Y) > 1 && abs(1 - Y(end-1)/Y(end)) < RTAU)
+		break
+	end
+	
 	% next bisection point
 	X = mean(Xint);
 		
@@ -40,6 +51,9 @@ for ii=1:imax
 	
 	% get relative distance
 	dY(2) = S.fResponse(SOL);
+	
+	% cache response
+	Y(end+1) = dY(2);
 	
 	% iteration print
 	if isfield(S,'fLog')

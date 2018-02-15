@@ -46,10 +46,10 @@ AX.degeneracy = {...
 
 for ii=1:3
 	ax(:,ii) = [
-		model.tov.rar.figure.ax(AX.degeneracy{:})
-		model.tov.rar.figure.ax(AX.mass{:})
-		model.tov.rar.figure.ax(AX.radius{:})
+		lib.module.figure.axes(AX.degeneracy{:})
+		lib.module.figure.axes(AX.mass{:})
+		lib.module.figure.axes(AX.radius{:})
 	];
 end
 
-fh = module.sapthesis.figure_grid(ax,'axHeight','equal','figure',{'FileName','analysis-beta0'});
+fh = lib.module.sapthesis.figure_grid(ax,'axHeight','equal');

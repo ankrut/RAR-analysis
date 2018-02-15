@@ -1,34 +1,35 @@
 function main
 P			= load('export/CacheProfileTheta0Low.mat');
 STYLE		= lib.require(@configs.style_profiles);
-ANCH		= lib.require(@model.tov.rar.anchor);
-AXIS.raw	= lib.require(@model.tov.rar.axes.raw);
-AXIS.center	= lib.require(@model.tov.rar.axes.center);
-AXIS.core	= lib.require(@model.tov.rar.axes.core);
+ANCH		= lib.require(@lib.model.tov.rar.anchor);
+SCALE		= lib.require(@lib.model.tov.rar.scale);
+AXIS.raw	= lib.require(@lib.model.tov.rar.axes.raw);
+AXIS.center	= lib.require(@lib.model.tov.rar.axes.center);
+AXIS.core	= lib.require(@lib.model.tov.rar.axes.core);
 fh			= view.without_cutoff.theta0.profiles_core.figure();
 
 % define fully degenerate core and pointlike vacuum solution
 opts = struct('xmax', 1E20, 'tau', 1E-16, 'rtau', 1E-8);
-pFDG = model.tov.core.profile('fermi_energy', 1 + 1E-6*50).calc(opts);
+pFDG = lib.model.tov.core.profile('fermi_energy', 1 + 1E-6*50).calc(opts);
 pFDG.data.density(end) = realmin;
 
-pPL = model.elementary.pointlike.profile(ANCH.surface.map(pFDG,AXIS.raw.mass));
+pPL = lib.model.elementary.pointlike.profile(ANCH.surface.map(pFDG,AXIS.raw.mass));
 pPL.set('radius',logspace(log10(pFDG.data.radius(end)),log10(pFDG.data.radius(end)) + 10));
 
 % set axis for pointlike solution (core focus)
-MAP.pl = lib.require(@model.tov.pointlike.map);
-AXIS.pointlike.core.radius		= module.ProfileAxis(MAP.pl.radius,		@(obj) AXIS.core.radius.scalemodel.map(pFDG));
-AXIS.pointlike.core.velocity	= module.ProfileAxis(MAP.pl.velocity,	@(obj) AXIS.core.velocity.scalemodel.map(pFDG));
-AXIS.pointlike.core.mass		= module.ProfileAxis(MAP.pl.mass,		@(obj) AXIS.core.mass.scalemodel.map(pFDG));
+MAP.pl = lib.require(@lib.model.tov.pointlike.map);
+AXIS.pointlike.core.radius		= lib.module.ProfileAxis('map', MAP.pl.radius,		'scale', @(obj) SCALE.core.radius.map(pFDG));
+AXIS.pointlike.core.velocity	= lib.module.ProfileAxis('map', MAP.pl.velocity,	'scale', @(obj) SCALE.core.velocity.map(pFDG));
+AXIS.pointlike.core.mass		= lib.module.ProfileAxis('map', MAP.pl.mass,		'scale', @(obj) SCALE.core.mass.map(pFDG));
 
 % show figure
 figure(fh);
 
 % density
 axes(fh.UserData.axes(3,1));
-hg.fgdgroup = hggroup(STYLE.fdggroup{:});
-vline(1,ANCH.velocity_core.map(pFDG,AXIS.center.density),'Parent',hg.fgdgroup);
+vline(1,ANCH.velocity_core.map(pFDG,AXIS.center.density));
 
+hg.fgdgroup = hggroup(STYLE.fdggroup{:});
 lib.view.plot.curve2D(...
 	'data', pFDG,...
 	'x',	AXIS.core.radius,...

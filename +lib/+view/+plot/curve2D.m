@@ -1,5 +1,5 @@
 function h=curve2D(varargin)
-Q = module.struct(...
+Q = lib.module.struct(...
 	'plot',		{},...
 	varargin{:}...
 );
@@ -16,6 +16,6 @@ switch(class(ax))
 	case 'function_handle'
 		X = ax(profile);
 		
-	case {'module.ProfileMapping', 'module.ProfileAxis'}
+	case {'lib.module.ProfileMapping', 'lib.module.ProfileAxis'}
 		X = ax.map(profile);
 end

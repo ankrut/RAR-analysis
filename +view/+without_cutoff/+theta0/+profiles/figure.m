@@ -1,8 +1,7 @@
 function fh = figure
-AXIS.core	= lib.require(@model.tov.rar.axes.core);
-AXIS.plat	= lib.require(@model.tov.rar.axes.plateau);
-AXIS.halo	= lib.require(@model.tov.rar.axes.halo);
-
+AXIS.core	= lib.require(@lib.model.tov.rar.axes.core);
+AXIS.plat	= lib.require(@lib.model.tov.rar.axes.plateau);
+AXIS.halo	= lib.require(@lib.model.tov.rar.axes.halo);
 
 fLABEL.radius = @(AXIS) struct(...
 	'format',		'$%s/%s$',...
@@ -115,19 +114,19 @@ AX.halo.degeneracy = {...
 	'YMinorTick', 'off' ...
 };
 
-ax(4,1) = model.tov.rar.figure.ax('xlabel',fLABEL.radius(AXIS.core),'ylabel',fLABEL.density,	'axes',[AX.core.radius,AX.core.density]);
-ax(3,1) = model.tov.rar.figure.ax('xlabel',fLABEL.radius(AXIS.core),'ylabel',fLABEL.velocity,	'axes',[AX.core.radius,AX.core.velocity]);
-ax(2,1) = model.tov.rar.figure.ax('xlabel',fLABEL.radius(AXIS.core),'ylabel',fLABEL.mass,		'axes',[AX.core.radius,AX.core.mass]);
-ax(1,1) = model.tov.rar.figure.ax('xlabel',fLABEL.radius(AXIS.core),'ylabel',fLABEL.degeneracy,	'axes',[AX.core.radius,AX.core.degeneracy]);
+ax(4,1) = lib.module.figure.axes('x',AXIS.core, 'y',fLABEL.density,		'axes',[AX.core.radius,AX.core.density]);
+ax(3,1) = lib.module.figure.axes('x',AXIS.core, 'y',fLABEL.velocity,	'axes',[AX.core.radius,AX.core.velocity]);
+ax(2,1) = lib.module.figure.axes('x',AXIS.core, 'y',fLABEL.mass,		'axes',[AX.core.radius,AX.core.mass]);
+ax(1,1) = lib.module.figure.axes('x',AXIS.core, 'y',fLABEL.degeneracy,	'axes',[AX.core.radius,AX.core.degeneracy]);
 
-ax(4,2) = model.tov.rar.figure.ax('xlabel',fLABEL.radius(AXIS.plat),'ylabel',fLABEL.density,	'axes',[AX.plat.radius,AX.plat.density]);
-ax(3,2) = model.tov.rar.figure.ax('xlabel',fLABEL.radius(AXIS.plat),'ylabel',fLABEL.velocity,	'axes',[AX.plat.radius,AX.plat.velocity]);
-ax(2,2) = model.tov.rar.figure.ax('xlabel',fLABEL.radius(AXIS.plat),'ylabel',fLABEL.mass,		'axes',[AX.plat.radius,AX.plat.mass]);
-ax(1,2) = model.tov.rar.figure.ax('xlabel',fLABEL.radius(AXIS.plat),'ylabel',fLABEL.degeneracy,	'axes',[AX.plat.radius,AX.plat.degeneracy]);
+ax(4,2) = lib.module.figure.axes('x',AXIS.plat, 'y',fLABEL.density,		'axes',[AX.plat.radius,AX.plat.density]);
+ax(3,2) = lib.module.figure.axes('x',AXIS.plat, 'y',fLABEL.velocity,	'axes',[AX.plat.radius,AX.plat.velocity]);
+ax(2,2) = lib.module.figure.axes('x',AXIS.plat, 'y',fLABEL.mass,		'axes',[AX.plat.radius,AX.plat.mass]);
+ax(1,2) = lib.module.figure.axes('x',AXIS.plat, 'y',fLABEL.degeneracy,	'axes',[AX.plat.radius,AX.plat.degeneracy]);
 
-ax(4,3) = model.tov.rar.figure.ax('xlabel',fLABEL.radius(AXIS.halo),'ylabel',fLABEL.density,	'axes',[AX.halo.radius,AX.halo.density]);
-ax(3,3) = model.tov.rar.figure.ax('xlabel',fLABEL.radius(AXIS.halo),'ylabel',fLABEL.velocity,	'axes',[AX.halo.radius,AX.halo.velocity]);
-ax(2,3) = model.tov.rar.figure.ax('xlabel',fLABEL.radius(AXIS.halo),'ylabel',fLABEL.mass,		'axes',[AX.halo.radius,AX.halo.mass]);
-ax(1,3) = model.tov.rar.figure.ax('xlabel',fLABEL.radius(AXIS.halo),'ylabel',fLABEL.degeneracy,	'axes',[AX.halo.radius,AX.halo.degeneracy]);
+ax(4,3) = lib.module.figure.axes('x',AXIS.halo, 'y',fLABEL.density,		'axes',[AX.halo.radius,AX.halo.density]);
+ax(3,3) = lib.module.figure.axes('x',AXIS.halo, 'y',fLABEL.velocity,	'axes',[AX.halo.radius,AX.halo.velocity]);
+ax(2,3) = lib.module.figure.axes('x',AXIS.halo, 'y',fLABEL.mass,		'axes',[AX.halo.radius,AX.halo.mass]);
+ax(1,3) = lib.module.figure.axes('x',AXIS.halo, 'y',fLABEL.degeneracy,	'axes',[AX.halo.radius,AX.halo.degeneracy]);
 
-fh = module.sapthesis.figure_grid(ax,'axHeight','equal','figure',{'FileName','profiles'});
+fh = lib.module.sapthesis.figure_grid(ax,'axHeight','equal');

@@ -1,8 +1,8 @@
 function cacheAnalysisGrid
 P		= load('export/TblAnalysisTheta0Low.mat');
 
-MAP		= lib.require(@model.tov.rar.map);
-ANCH	= lib.require(@model.tov.rar.anchor);
+MAP		= lib.require(@lib.model.tov.rar.map);
+ANCH	= lib.require(@lib.model.tov.rar.anchor);
 
 % set cache maps
 fMap	= @(p) struct(...

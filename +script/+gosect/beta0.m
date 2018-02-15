@@ -1,16 +1,16 @@
 function varargout = beta0(varargin)
-Q = module.struct(...
+Q = lib.module.struct(...
 	'gosect', {},...
 	varargin{:} ...
 );
 
 % destructure (necessary parameter)
 vm				= Q.model;		% model struct
-list			= Q.list;		% response list (module.ProfileResponseList)
+list			= Q.list;		% response list (lib.module.ProfileResponseList)
 gosectCascade	= Q.gosect;		% set gosect options cascade
 
-if isa(list,'module.ProfileResponse')
-	list = module.ProfileResponseList(list);
+if isa(list,'lib.module.ProfileResponse')
+	list = lib.module.ProfileResponseList(list);
 end
 
 % set search interval
@@ -19,6 +19,9 @@ if isfield(Q,'interval')
 elseif isfield(Q,'dbeta0')
 	Xint(1) = vm.param.beta0 - Q.dbeta0;
 	Xint(2) = vm.param.beta0 + Q.dbeta0;
+elseif isfield(Q,'qbeta0')
+	Xint(1) = vm.param.beta0*(1 - Q.qbeta0);
+	Xint(2) = vm.param.beta0*(1 + Q.qbeta0);
 end
 
 % -----------------------------------------------------------------------
@@ -43,7 +46,7 @@ fUpdate = @(x,vm) struct(...
 );
 
 % search for solution
-[varargout{1:nargout}] = model.tov.rar.gosect(vm,list,...
+[varargout{1:nargout}] = lib.model.tov.rar.gosect(vm,list,...
 	'Xint',			log(Xint),...
 	'fResponse',	fResponse,...
 	'fUpdate',		fUpdate,...

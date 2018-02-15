@@ -1,9 +1,9 @@
 function main
 P			= load('export/CacheProfileTheta0Low.mat');
 STYLE		= lib.require(@configs.style_profiles);
-ANCH		= lib.require(@model.tov.rar.anchor);
-AXIS.core	= lib.require(@model.tov.rar.axes.core);
-AXIS.halo	= lib.require(@model.tov.rar.axes.halo);
+ANCH		= lib.require(@lib.model.tov.rar.anchor);
+AXIS.core	= lib.require(@lib.model.tov.rar.axes.core);
+AXIS.halo	= lib.require(@lib.model.tov.rar.axes.halo);
 fh			= view.without_cutoff.theta0.profiles_halo.figure();
 
 figure(fh);

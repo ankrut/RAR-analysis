@@ -1,7 +1,7 @@
 function main
 P			= load('export/CacheWithoutCutoffProfilesRho0.mat');
 STYLE		= lib.require(@configs.style_profiles);
-AXIS.raw	= lib.require(@model.tov.rar.axes.raw);
+AXIS.raw	= lib.require(@lib.model.tov.rar.axes.raw);
 fh			= view.without_cutoff.rho0.profiles_raw.figure();
 
 % show figure
@@ -43,8 +43,8 @@ P.thin.forEach(@(p) lib.view.plot.curve2D(...
 ));
 
 % legend
-axes(fh.UserData.axes(1,1));
-lib.view.plot.legend([],'location','northwest');
+% axes(fh.UserData.axes(1,1));
+% lib.view.plot.legend([],'location','northwest');
 
 % save
 lib.view.latex.figure(...

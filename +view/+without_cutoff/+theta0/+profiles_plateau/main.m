@@ -1,8 +1,8 @@
 function main
 P			= load('export/CacheProfileTheta0Low.mat');
 STYLE		= lib.require(@configs.style_profiles);
-ANCH		= lib.require(@model.tov.rar.anchor);
-AXIS.plat	= lib.require(@model.tov.rar.axes.plateau);
+ANCH		= lib.require(@lib.model.tov.rar.anchor);
+AXIS.plat	= lib.require(@lib.model.tov.rar.axes.plateau);
 fh			= view.without_cutoff.theta0.profiles_plateau.figure();
 
 figure(fh);

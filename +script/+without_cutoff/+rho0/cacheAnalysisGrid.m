@@ -1,8 +1,8 @@
 function cacheAnalysisGrid
 P		= load('export/TblWithoutCutoffAnalysisRho0.mat');
 
-MAP		= lib.require(@model.tov.rar.map);
-ANCH	= lib.require(@model.tov.rar.anchor);
+MAP		= lib.require(@lib.model.tov.rar.map);
+ANCH	= lib.require(@lib.model.tov.rar.anchor);
 
 % set cache maps
 fMap	= @(p) struct(...
@@ -31,7 +31,7 @@ fMap	= @(p) struct(...
 );
 
 % cache data
-T.thin		= P.thin.map(@(vm) fMap(model.tov.rar.profile('model', vm)));
+T.thin		= P.thin.map(@(vm) fMap(lib.model.tov.rar.profile('model', vm)));
 
 % save
 lib.save('export/CacheWithoutCutoffAnalysisRho0.mat',T);

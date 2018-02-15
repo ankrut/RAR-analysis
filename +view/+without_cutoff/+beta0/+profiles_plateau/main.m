@@ -1,7 +1,7 @@
 function main
 P			= load('export/CacheWithoutCutoffBeta0Profiles.mat');
 STYLE		= lib.require(@configs.style_profiles);
-AXIS.plat	= lib.require(@model.tov.rar.axes.plateau);
+AXIS.plat	= lib.require(@lib.model.tov.rar.axes.plateau);
 fh			= view.without_cutoff.beta0.profiles_plateau.figure();
 
 ax.density	= fh.UserData.axes(3,:);

@@ -1,8 +1,8 @@
 function main
 P			= load('export/CacheProfileW0.mat');
 STYLE		= lib.require(@configs.style_profiles);
-AXIS.center	= lib.require(@model.tov.rar.axes.center);
-AXIS.core	= lib.require(@model.tov.rar.axes.core);
+AXIS.center	= lib.require(@lib.model.tov.rar.axes.center);
+AXIS.core	= lib.require(@lib.model.tov.rar.axes.core);
 fh			= view.with_cutoff.W0.profiles.figure();
 
 % makeup

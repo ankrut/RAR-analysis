@@ -3,7 +3,7 @@
 function save(filename,elm,varargin)
 if isstruct(elm)
 	save(filename,'-struct','elm')
-elseif isa(elm,'module.array')
+elseif isa(elm,'lib.module.array')
 	save_array(filename,elm,struct(varargin{:}));
 else
 	save(filename,'elm',varargin{:});

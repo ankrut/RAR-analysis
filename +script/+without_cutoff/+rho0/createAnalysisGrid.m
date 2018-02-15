@@ -10,14 +10,14 @@ vm.seed		= struct('param', param.seed, 'options', opts);
 X = linspace(-20,50,100);
 
 % calc profiles
-T.thin			= module.array();
-resp			= module.ProfileResponse(searchCfg.ResponseList.rho0,1E-7);
+T.thin			= lib.module.array();
+resp			= lib.module.ProfileResponse(searchCfg.ResponseList.rho0,1E-7);
 fSolution{1}	= @(vm,list) script.nlinfit.beta0('model',vm, 'list', list);
 
 for x = X
 	vm.seed.param.theta0 = x;
 	
-	[~,vm.seed] = module.find(...
+	[~,vm.seed] = lib.module.find(...
 		'query',		resp,...
 		'model',		vm.seed,...
 		'fSolution',	fSolution ...
