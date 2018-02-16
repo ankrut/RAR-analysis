@@ -1,7 +1,9 @@
 function createAnalysisGrid
+GridPoints	= load('export/TblGridPointsW0.mat');
+
 % gives the solution with the largest surface rudius with a cuspy halo
 % (for beta0 = 1E-6 and theta0 = 20
-W0max	= 35.790979949063676;
+W0max	= GridPoints.trans3.model.param.W0;
 
 % set model parameter
 opts	= struct('xmax', 1E20, 'tau', 1E-16, 'rtau', 1E-4);
